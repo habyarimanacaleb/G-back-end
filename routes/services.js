@@ -4,7 +4,7 @@ const Service = require("../models/seviceModel");
 const isAdmin = require('../middlewares/IsAdmin');
 
 // Create a new service
-router.post("/",isAdmin, async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const service = new Service(req.body);
     // const id = req.params.id
