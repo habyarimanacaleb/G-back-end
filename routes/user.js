@@ -6,7 +6,6 @@ const session = require('express-session');
 const User = require('../models/userModel');
 const dotenv = require('dotenv');
 dotenv.config();  // Load environment variables
-
 const router = express.Router();
 
 // Create a transporter using Gmail's SMTP service
@@ -34,7 +33,6 @@ router.post('/register', async (req, res) => {
 
     // Create a new user and save it immediately
     const user = new User({ email, password: hashedPassword });
-    await user.save();
 
     // Generate a verification token
     const verificationToken = jwt.sign(
@@ -53,6 +51,7 @@ router.post('/register', async (req, res) => {
     };
 
     await transporter.sendMail(mailOptions); // Send the email
+    await user.save();
     res.status(200).json({ message: 'Verification email sent!' });
   } catch (err) {
     console.error(err);

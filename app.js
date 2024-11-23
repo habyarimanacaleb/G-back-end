@@ -3,8 +3,14 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 const app = express();
+
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(express.json());
+
 app.use('/api/services', require('./routes/services')); // Example services route
+app.use('/api/user', require('./routes/user')); // Example user route
+app.use('/api', require('./routes/application')); // Example application route
 const dbUri = process.env.DB_URI || `mongodb+srv://Gilbert:${process.env.db_password}@g-portfolio.uknv2.mongodb.net/?retryWrites=true&w=majority&appName=G-PORTFOLIO`;
 console.log(dbUri)
 mongoose
