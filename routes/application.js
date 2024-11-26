@@ -6,16 +6,19 @@ const router = express();
 // Load environment variables
 dotenv.config();
 
+// In-memory array to store form submissions temporarily
+let formSubmissions = [];
+
 // Configure nodemailer transporter (for sending emails)
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: process.env.EMAIL,  // Your Gmail address from .env
-    pass: process.env.EMAIL_PASSWORD,  // Your Gmail password or app-specific password from .env
+    user: process.env.EMAIL,
+    pass: process.env.EMAIL_PASSWORD,
   },
 });
 
-// Application form submission route
+// Application form submission route (POST)
 router.post('/application', async (req, res) => {
   const formData = req.body;
 
@@ -30,8 +33,8 @@ router.post('/application', async (req, res) => {
     }
   }
 
-  // Print form data to the console (optional for debugging)
-  console.log(formData);
+  // Store form data temporarily in memory
+  formSubmissions.push(formData);
 
   // Compose the email with the form data
   const mailOptions = {
@@ -74,6 +77,14 @@ router.post('/application', async (req, res) => {
     console.error('Error sending email:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
+});
+
+// GET route to retrieve all form data
+router.get('/submissions', (req, res) => {
+  if (formSubmissions.length === 0) {
+    return res.status(404).json({ message: 'No form submissions found.' });
+  }
+  res.status(200).json({ submissions: formSubmissions });
 });
 
 module.exports = router;
