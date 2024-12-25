@@ -1,18 +1,20 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const userRoutes = require("./routes/user");
 const serviceRoutes = require("./routes/services");
-const applicationRoutes = require("./routes/application");
-require("dotenv").config();
+const applicationRoutes = require("./routes/applicationRoutes");
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.json());
+app.use(cors());
 
-app.use("/api/services", serviceRoutes);
-app.use("/api/user", userRoutes);
+app.use("/", serviceRoutes);
+app.use("/", userRoutes);
 app.use("/api",applicationRoutes);
 const dbUri =
   process.env.DB_URI ||
