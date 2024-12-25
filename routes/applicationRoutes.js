@@ -2,7 +2,7 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
-const Application = require('../models/Application');
+const Application = require('./models/Application');
 const router = express.Router();
 
 // Load environment variables
